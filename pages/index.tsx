@@ -46,7 +46,13 @@ const Home: NextPage<PageProps> = ({ latestCollections }) => {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-    const client = new S3Client({ region: 'us-west-2' })
+    const client = new S3Client({
+        region: 'us-west-2',
+        credentials: {
+            accessKeyId: process.env.ACCESS_KEY_ID as string,
+            secretAccessKey: process.env.SECRET_ACCESS_KEY as string,
+        },
+    })
 
     const data = await client.send(new ListObjectsCommand({ Bucket: 'artificia.io' }))
 
